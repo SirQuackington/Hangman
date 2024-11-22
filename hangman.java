@@ -1,9 +1,10 @@
+
 import java.awt.event.*;
 import javax.swing.*;
 
-public class hangman {
+public class hangman  {
     
-    public static void sleep(int time)
+     public static void sleep(int time)
     {
         try {
             Thread.sleep(time);
@@ -12,7 +13,9 @@ public class hangman {
         }
     }
     
+    public static String word = "";
     public static void main(String[] args) {
+        //gameplay g = new gameplay();
         JFrame f = new JFrame("Password Field Example");
 
         JPasswordField value = new JPasswordField();
@@ -21,7 +24,6 @@ public class hangman {
         JButton start = new JButton("Start");
 
         f.setLayout(null);
-
         int frameWidth = 600;  // Doubled width
         int frameHeight = 600; // Doubled height
         int labelWidth = 200;  // Doubled label width
@@ -46,7 +48,7 @@ public class hangman {
         f.add(value);
         f.add(l2);
         f.add(start);
-
+        
         value.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -54,7 +56,14 @@ public class hangman {
 
                 // Allow only letters or backspace
                 if (Character.isLetter(typedChar) || typedChar == KeyEvent.VK_BACK_SPACE) {
-                    if (value.getPassword().length >= 7 && typedChar != KeyEvent.VK_BACK_SPACE) {
+                    if(typedChar == KeyEvent.VK_ENTER){
+                        word = value.getText();
+                        System.out.println(word);
+                        //JOptionPane.showMessageDialog(f, "Button was clicked!");
+                        Game.game();
+                        f.hide();
+                    }
+                    else if (value.getPassword().length >= 7 && typedChar != KeyEvent.VK_BACK_SPACE) {
                         e.consume();  // Prevent typing when max length reached
                         System.out.println("Maximum length reached! Only 7 characters allowed.");
                         l2.setText("Maximum length reached! Only 7 characters allowed.");
@@ -67,6 +76,7 @@ public class hangman {
                         }
                     }
                 } else {
+                    System.out.println(e);
                     e.consume();  // Consume invalid key events (numbers, symbols, etc.)
                     System.out.println("Invalid character! No numbers or spaces allowed.");
                     l2.setText("Invalid character! No numbers or spaces allowed.");
@@ -87,13 +97,18 @@ public class hangman {
             }
         });
 
-        /*start.addActionListener(new ActionListener() {
+        start.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // What happens when the button is clicked
-                JOptionPane.showMessageDialog(frame, "Button was clicked!");
+                word = value.getText();
+                System.out.println(word);
+                //JOptionPane.showMessageDialog(f, "Button was clicked!");
+                Game.game();
+                f.hide();
+                //System.exit(0);
             }
-        });*/
+        });
 
         f.setSize(frameWidth, frameHeight);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
